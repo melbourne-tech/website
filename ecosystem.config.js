@@ -2,7 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'website',
-      script: 'npm run start -- --port $PORT',
+      script: 'npm',
+      args: 'start',
       instances: 4,
       exec_mode: 'cluster',
       watch: true,
