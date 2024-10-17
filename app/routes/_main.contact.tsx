@@ -45,7 +45,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         name: 'ValidationError' as const,
         formErrors: parsed.error.formErrors,
       },
-      { status: 400 }
+      { status: 400 },
     )
   }
 

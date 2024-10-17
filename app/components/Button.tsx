@@ -29,14 +29,14 @@ const Button = ({
           'bg-green-700 border-green-700 hover:bg-green-600 hover:border-green-600 active:bg-green-500',
         variant === 'ERROR' &&
           'bg-red-700 border-red-700 hover:bg-red-600 hover:border-red-600 active:bg-red-500',
-        className
+        className,
       )}
       {...props}
     >
       <span
         className={clsx(
           'flex items-center flex-shrink-0 gap-2',
-          isLoading && 'opacity-0'
+          isLoading && 'opacity-0',
         )}
       >
         {icon}
