@@ -1,11 +1,14 @@
+import type { LinksFunction } from '@remix-run/node'
 import {
+  json,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from '@remix-run/react'
-import type { LinksFunction } from '@remix-run/node'
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '~/lib/constants'
 
 import './tailwind.css'
 
@@ -22,7 +25,20 @@ export const links: LinksFunction = () => [
   },
 ]
 
+export async function loader() {
+  const ENV: WindowEnv = {
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY,
+  }
+
+  return json({
+    ENV,
+  })
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData<typeof loader>()
+
   return (
     <html lang="en" className="h-full">
       <head>
@@ -34,6 +50,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="text-base text-text bg-white antialiased h-full">
         {children}
         <ScrollRestoration />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+          }}
+        />
         <Scripts />
       </body>
     </html>
