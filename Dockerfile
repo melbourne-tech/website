@@ -11,6 +11,15 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
+# --- Production Dependencies ---
+FROM deps as prod-deps
+
+WORKDIR /app
+
+COPY --from=deps /app/node_modules /app/node_modules
+ADD package.json package-lock.json ./
+RUN npm prune --omit=dev
+
 # --- Builder ---
 FROM base AS builder
 
@@ -18,38 +27,27 @@ WORKDIR /app
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN --mount=type=secret,id=RESEND_API_KEY,env=RESEND_API_KEY npm run build
+RUN npm run build
 
 # --- Production ---
-FROM base AS runner
+FROM base
 
 WORKDIR /app
 
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV="production"
+ENV PORT="3000"
 
 RUN apk add --no-cache curl
 RUN addgroup nodejs
-RUN adduser -SDH nextjs
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
+RUN adduser -SDH remix
 
-# COPY --chown=nextjs:nodejs entrypoint.sh ./entrypoint.sh
-# RUN chmod +x ./entrypoint.sh
+COPY --from=prod-deps --chown=remix:nodejs /app/node_modules /app/node_modules
+COPY --from=builder --chown=remix:nodejs /app/build /app/build
+COPY --from=builder --chown=remix:nodejs /app/public /app/public
+COPY --from=builder --chown=remix:nodejs /app/package.json /app/package.json
 
-# RUN mkdir -p .next public
-# RUN chown -R nextjs:nodejs .next public
-
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-
-USER nextjs
+USER remix
 
 EXPOSE 3000
 
-ENV PORT="3000"
-ENV HOSTNAME="0.0.0.0"
-
-# ENTRYPOINT ["./entrypoint.sh"]
-CMD ["node", "server.js"]
+CMD ["npm", "start"]

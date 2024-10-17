@@ -44,5 +44,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          secrets: |
-            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}

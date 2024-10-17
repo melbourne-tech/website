@@ -1,9 +1,13 @@
-import Layout from '../../../components/Layout'
-import { NextPageWithLayout } from '../../../lib/types'
+import type { MetaFunction } from '@remix-run/node'
+import { Link } from '@remix-run/react'
 
-const GinRummyScoreTrackerPrivacyPolicyPage: NextPageWithLayout = () => {
+export const meta: MetaFunction = () => {
+  return [{ title: 'Gin Rummy Score Tracker Privacy Policy | Melbourne Tech' }]
+}
+
+export default function GinRummyScoreTrackerPrivacyPolicyPage() {
   return (
-    <article className="w-full max-w-xl px-4 mx-auto my-8 sm:my-12 md:my-16 flex flex-col gap-6 sm:gap-8 prose">
+    <article className="w-full max-w-xl px-4 mx-auto my-8 sm:my-12 md:my-16 prose">
       <h1>Privacy Policy</h1>
       <p>Last updated: August 06, 2022</p>
       <p>
@@ -338,14 +342,11 @@ const GinRummyScoreTrackerPrivacyPolicyPage: NextPageWithLayout = () => {
         If you have any questions about this Privacy Policy, You can contact us:
       </p>
       <ul>
+        <li>
+          By website: <Link to="/contact">Contact</Link>
+        </li>
         <li>By email: support@melbournetech.com</li>
       </ul>
     </article>
   )
 }
-
-GinRummyScoreTrackerPrivacyPolicyPage.getLayout = (page) => (
-  <Layout>{page}</Layout>
-)
-
-export default GinRummyScoreTrackerPrivacyPolicyPage
