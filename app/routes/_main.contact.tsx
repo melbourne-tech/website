@@ -34,6 +34,7 @@ const schema = z.object({
   email: z.string().email(),
   subject: z.string().min(1, "Can't be empty"),
   message: z.string().min(1, "Can't be empty"),
+  is_bot: z.literal('false'),
 })
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -146,6 +147,8 @@ export default function ContactPage() {
             />
             {validationErrorsForField(fetcher, 'message')}
           </div>
+
+          <input type="hidden" name="is_bot" defaultValue="false" aria-hidden />
 
           <Button
             type="submit"
