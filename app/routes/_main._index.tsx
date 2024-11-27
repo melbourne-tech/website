@@ -1,5 +1,7 @@
 import type { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
+import { AndroidIcon, AppleIcon } from '~/components/Icons'
+import { ProjectCard, type Project } from '~/components/ProjectCard'
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,6 +9,49 @@ export const meta: MetaFunction = () => {
     { name: 'description', content: 'Melbourne Tech' },
   ]
 }
+
+const projects: Project[] = [
+  {
+    name: 'App Boilerplate',
+    status: 'upcoming',
+    description: 'An Expo and Supabase starter kit boilerplate',
+  },
+  {
+    name: 'then.sh',
+    status: 'upcoming',
+    description: 'A modern container deployment platform that gives you the reliability of enterprise infrastructure on your own servers',
+    url: 'https://then.sh/',
+  },
+  {
+    name: 'side.domains',
+    status: 'active',
+    description: 'A toolkit for managing your side project domains',
+    url: 'https://side.domains/',
+  },
+  {
+    name: 'Gin Rummy Score Tracker',
+    status: 'active',
+    description: 'iOS and Android app for tracking scores in the gin rummy card game',
+    url: [
+      {
+        url: 'https://apps.apple.com/us/app/gin-rummy-score-tracker/id1620676041',
+        label: 'iOS',
+        icon: AppleIcon,
+      },
+      {
+        url: 'https://play.google.com/store/apps/details?id=com.melbournetech.ginrummyscoring',
+        label: 'Android',
+        icon: AndroidIcon,
+      },
+    ],
+  },
+  {
+    name: 'Credit Card Churner Australia',
+    status: 'active',
+    description: 'Compares Credit Card Welcome Bonuses for australian credit cards',
+    url: 'https://www.churner.com.au/',
+  },
+]
 
 export default function Index() {
   return (
@@ -19,7 +64,7 @@ export default function Index() {
           Melbourne Tech
         </h1>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mb-14">
           <h2 style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)' }}>
             30 N Gould St Ste 6707
             <br />
@@ -31,6 +76,17 @@ export default function Index() {
           <h2 style={{ fontSize: 'clamp(1rem, 4vw, 1.25rem)' }}>
             <Link to="contact">support@melbournetech.com</Link>
           </h2>
+        </div>
+
+        <div className="flex flex-col gap-2">
+          <h2 className="text-2xl font-semibold">Our Projects</h2>
+          <div className="flex flex-col divide-y">
+            {projects.map((project) => (
+              <div key={project.name} className="py-2">
+                <ProjectCard project={project} />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
     </div>
