@@ -12,6 +12,7 @@
     "prettier:write": "prettier --write ."
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.0.2",
     "@remix-run/node": "^2.13.1",
     "@remix-run/react": "^2.13.1",
     "@remix-run/serve": "^2.13.1",
@@ -24,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-textarea-autosize": "^8.5.4",
     "resend": "^4.0.0",
+    "tailwind-merge": "^2.5.4",
     "zod": "^3.23.8"
   },
   "devDependencies": {

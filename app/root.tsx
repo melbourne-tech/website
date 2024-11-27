@@ -8,7 +8,11 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react'
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from '~/lib/constants'
+import {
+  CLOUDFLARE_TURNSTILE_SITE_KEY,
+  SUPABASE_ANON_KEY,
+  SUPABASE_URL,
+} from '~/lib/constants'
 
 import './tailwind.css'
 
@@ -29,6 +33,7 @@ export async function loader() {
   const ENV: WindowEnv = {
     SUPABASE_URL,
     SUPABASE_ANON_KEY,
+    CLOUDFLARE_TURNSTILE_SITE_KEY,
   }
 
   return json({
