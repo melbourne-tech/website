@@ -1,6 +1,7 @@
 import type { MetaFunction } from '@remix-run/node'
 import { Link } from '@remix-run/react'
-import { ExternalLink } from 'lucide-react'
+import { AndroidIcon, AppleIcon } from '~/components/Icons'
+import { ProjectCard, type Project } from '~/components/ProjectCard'
 
 export const meta: MetaFunction = () => {
   return [
@@ -9,7 +10,7 @@ export const meta: MetaFunction = () => {
   ]
 }
 
-const projects = [
+const projects: Project[] = [
   {
     name: 'App Boilerplate',
     status: 'upcoming',
@@ -19,17 +20,30 @@ const projects = [
     name: 'then.sh',
     status: 'upcoming',
     description: 'A modern container deployment platform that gives you the reliability of enterprise infrastructure on your own servers',
+    url: 'https://then.sh/',
   },
   {
     name: 'side.domains',
     status: 'active',
     description: 'A toolkit for managing your side project domains',
+    url: 'https://side.domains/',
   },
   {
     name: 'Gin Rummy Score Tracker',
     status: 'active',
     description: 'iOS and Android app for tracking scores in the gin rummy card game',
-    url: 'https://apps.apple.com/us/app/gin-rummy-score-tracker/id1620676041',
+    url: [
+      {
+        url: 'https://apps.apple.com/us/app/gin-rummy-score-tracker/id1620676041',
+        label: 'iOS',
+        icon: AppleIcon,
+      },
+      {
+        url: 'https://play.google.com/store/apps/details?id=com.melbournetech.ginrummyscoring',
+        label: 'Android',
+        icon: AndroidIcon,
+      },
+    ],
   },
   {
     name: 'Credit Card Churner Australia',
@@ -69,24 +83,7 @@ export default function Index() {
           <div className="flex flex-col divide-y">
             {projects.map((project) => (
               <div key={project.name} className="py-2">
-                {/* eslint-disable-next-line react/jsx-no-target-blank */}
-                <a
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener"
-                  className="block py-4 px-4 -mx-4 transition-colors hover:bg-gray-50 group rounded-lg"
-                >
-                  <div className="flex items-center justify-between gap-3 mb-2">
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xl font-medium">{project.name}</h3>
-                      <ExternalLink className="w-4 h-4 text-gray-400 transition-colors group-hover:text-gray-600" />
-                    </div>
-                    <span className="px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded-full">
-                      {project.status}
-                    </span>
-                  </div>
-                  <p className="text-gray-600">{project.description}</p>
-                </a>
+                <ProjectCard project={project} />
               </div>
             ))}
           </div>
