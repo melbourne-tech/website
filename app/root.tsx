@@ -1,4 +1,4 @@
-import type { LinksFunction } from '@remix-run/node'
+import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/cloudflare'
 import {
   json,
   Links,
@@ -8,7 +8,6 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from '@remix-run/react'
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from '~/lib/constants'
 
 import './tailwind.css'
 
@@ -25,10 +24,10 @@ export const links: LinksFunction = () => [
   },
 ]
 
-export async function loader() {
+export async function loader({ context }: LoaderFunctionArgs) {
   const ENV: WindowEnv = {
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY,
+    SUPABASE_URL: context.cloudflare.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY,
   }
 
   return json({

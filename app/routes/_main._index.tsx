@@ -1,4 +1,4 @@
-import type { MetaFunction } from '@remix-run/node'
+import type { MetaFunction } from '@remix-run/cloudflare'
 import { Link } from '@remix-run/react'
 import { AndroidIcon, AppleIcon } from '~/components/Icons'
 import { ProjectCard, type Project } from '~/components/ProjectCard'
@@ -19,7 +19,8 @@ const projects: Project[] = [
   {
     name: 'then.sh',
     status: 'upcoming',
-    description: 'A modern container deployment platform that gives you the reliability of enterprise infrastructure on your own servers',
+    description:
+      'A modern container deployment platform that gives you the reliability of enterprise infrastructure on your own servers',
     url: 'https://then.sh/',
   },
   {
@@ -31,7 +32,8 @@ const projects: Project[] = [
   {
     name: 'Gin Rummy Score Tracker',
     status: 'active',
-    description: 'iOS and Android app for tracking scores in the gin rummy card game',
+    description:
+      'iOS and Android app for tracking scores in the gin rummy card game',
     url: [
       {
         url: 'https://apps.apple.com/us/app/gin-rummy-score-tracker/id1620676041',
@@ -48,7 +50,8 @@ const projects: Project[] = [
   {
     name: 'Credit Card Churner Australia',
     status: 'active',
-    description: 'Compares Credit Card Welcome Bonuses for australian credit cards',
+    description:
+      'Compares Credit Card Welcome Bonuses for australian credit cards',
     url: 'https://www.churner.com.au/',
   },
 ]

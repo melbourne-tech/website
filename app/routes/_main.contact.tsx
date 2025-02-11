@@ -3,13 +3,13 @@ import {
   json,
   LoaderFunctionArgs,
   type MetaFunction,
-} from '@remix-run/node'
+} from '@remix-run/cloudflare'
 import { useFetcher, useLoaderData } from '@remix-run/react'
 import { CheckCircleIcon, SendIcon, XCircleIcon } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { z } from 'zod'
 import { validationErrorsForField } from '~/lib/form'
-import resend from '~/lib/resend'
+import { createResendClient } from '~/lib/resend'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import Label from '../components/Label'
@@ -37,7 +37,7 @@ const schema = z.object({
   is_bot: z.literal('false'),
 })
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: ActionFunctionArgs) => {
   const body = await request.formData()
   const parsed = schema.safeParse(Object.fromEntries(body))
   if (!parsed.success) {
@@ -51,6 +51,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 
   const { name, email, subject, message } = parsed.data
+
+  const resend = createResendClient(context.cloudflare.env.RESEND_API_KEY)
 
   const { error } = await resend.emails.send({
     from: 'Melbourne Tech Contact Form <contact@mail.melbournetech.com>',
@@ -107,6 +109,7 @@ export default function ContactPage() {
               name="name"
               placeholder="Your Name"
               required
+              // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
             />
             {validationErrorsForField(fetcher, 'name')}
