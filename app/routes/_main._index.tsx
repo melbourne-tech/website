@@ -17,13 +17,6 @@ const projects: Project[] = [
     description: 'An Expo and Supabase starter kit boilerplate',
   },
   {
-    name: 'then.sh',
-    status: 'upcoming',
-    description:
-      'A modern container deployment platform that gives you the reliability of enterprise infrastructure on your own servers',
-    url: 'https://then.sh/',
-  },
-  {
     name: 'side.domains',
     status: 'active',
     description: 'A toolkit for managing your side project domains',
