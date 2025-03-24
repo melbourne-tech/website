@@ -1,5 +1,5 @@
 import { CheckCircleIcon, SendIcon, XCircleIcon } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { data, useFetcher } from 'react-router'
 import { z } from 'zod'
 import { validationErrorsForField } from '~/lib/form'
@@ -9,6 +9,7 @@ import Input from '../components/Input'
 import Label from '../components/Label'
 import Textarea from '../components/Textarea'
 import type { Route } from './+types/_main.contact'
+import { Turnstile } from '@marsidev/react-turnstile'
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -17,11 +18,14 @@ export const meta: Route.MetaFunction = () => {
   ]
 }
 
-export const loader = async ({ request }: Route.LoaderArgs) => {
+export const loader = async ({ request, context }: Route.LoaderArgs) => {
   const url = new URL(request.url)
   const subject = url.searchParams.get('subject')
 
-  return { subject }
+  return {
+    subject,
+    cfTurnstileSiteKey: context.cloudflare.env.CLOUDFLARE_TURNSTILE_SITE_KEY,
+  }
 }
 
 const schema = z.object({
@@ -29,7 +33,7 @@ const schema = z.object({
   email: z.string().email(),
   subject: z.string().min(1, "Can't be empty"),
   message: z.string().min(1, "Can't be empty"),
-  is_bot: z.literal('false'),
+  cf_turnstile_response: z.string().min(1, 'You must complete the captcha'),
 })
 
 export const action = async ({ request, context }: Route.ActionArgs) => {
@@ -43,6 +47,35 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
       },
       { status: 400 },
     )
+  }
+
+  // Validate the turnstile response with https://challenges.cloudflare.com/turnstile/v0/siteverify
+
+  const turnstileResponse = await fetch(
+    `https://challenges.cloudflare.com/turnstile/v0/siteverify`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        secret: context.cloudflare.env.CLOUDFLARE_TURNSTILE_SECRET_KEY,
+        response: parsed.data.cf_turnstile_response,
+      }),
+    },
+  )
+  const turnstileResponseJson = await turnstileResponse.json()
+  console.log('turnstileResponseJson:', turnstileResponseJson)
+
+  if (
+    !(
+      typeof turnstileResponseJson === 'object' &&
+      turnstileResponseJson !== null &&
+      'success' in turnstileResponseJson &&
+      turnstileResponseJson.success
+    )
+  ) {
+    return data({ name: 'TurnstileError' }, { status: 400 })
   }
 
   const { name, email, subject, message } = parsed.data
@@ -69,14 +102,15 @@ From: ${name}
 }
 
 export default function ContactPage({
-  loaderData: { subject },
+  loaderData: { subject, cfTurnstileSiteKey },
 }: Route.ComponentProps) {
   const fetcher = useFetcher<typeof action>()
 
   const isSubmitting = fetcher.state === 'submitting'
   const isError =
     fetcher.data?.name === 'ValidationError' ||
-    fetcher.data?.name === 'SendError'
+    fetcher.data?.name === 'SendError' ||
+    fetcher.data?.name === 'TurnstileError'
   const isSuccess = fetcher.data === null
 
   const ref = useRef<HTMLFormElement>(null)
@@ -85,6 +119,9 @@ export default function ContactPage({
       ref.current?.reset()
     }
   }, [isSuccess])
+
+  const [isTurnstileLoaded, setIsTurnstileLoaded] = useState(false)
+  const turnstileResponseInputRef = useRef<HTMLInputElement>(null)
 
   return (
     <div className="flex flex-col flex-1">
@@ -147,7 +184,26 @@ export default function ContactPage({
             {validationErrorsForField(fetcher, 'message')}
           </div>
 
-          <input type="hidden" name="is_bot" defaultValue="false" aria-hidden />
+          <div hidden={!isTurnstileLoaded} className="h-20">
+            <Turnstile
+              siteKey={cfTurnstileSiteKey}
+              onSuccess={(token) => {
+                turnstileResponseInputRef.current!.value = token
+              }}
+              onLoadScript={() => setIsTurnstileLoaded(true)}
+            />
+
+            <input
+              ref={turnstileResponseInputRef}
+              required
+              type="hidden"
+              name="cf_turnstile_response"
+              aria-hidden
+            />
+
+            {validationErrorsForField(fetcher, 'cf_turnstile_response')}
+          </div>
+          <div className="h-20" hidden={isTurnstileLoaded} />
 
           <Button
             type="submit"

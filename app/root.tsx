@@ -1,12 +1,5 @@
-import type { LinksFunction, LoaderFunctionArgs } from 'react-router'
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-} from 'react-router'
+import type { LinksFunction } from 'react-router'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 
 import './tailwind.css'
 
@@ -23,20 +16,7 @@ export const links: LinksFunction = () => [
   },
 ]
 
-export async function loader({ context }: LoaderFunctionArgs) {
-  const ENV: WindowEnv = {
-    CLOUDFLARE_TURNSTILE_SITE_KEY:
-      context.cloudflare.env.CLOUDFLARE_TURNSTILE_SITE_KEY,
-  }
-
-  return {
-    ENV,
-  }
-}
-
 export function Layout({ children }: { children: React.ReactNode }) {
-  const data = useLoaderData<typeof loader>()
-
   return (
     <html lang="en" className="h-full">
       <head>
@@ -48,11 +28,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body className="text-base text-text bg-white antialiased h-full">
         {children}
         <ScrollRestoration />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
-          }}
-        />
         <Scripts />
       </body>
     </html>

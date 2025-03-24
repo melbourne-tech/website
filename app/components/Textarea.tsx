@@ -24,7 +24,7 @@ const Textarea = ({
   const TextareaComponent =
     typeof window !== 'undefined' ? TextareaAutosize : 'textarea'
 
-  const autoSizeProps = typeof window !== 'undefined' ? { minRows: 3 } : {}
+  const autoSizeProps = typeof window !== 'undefined' ? { minRows: 2 } : {}
 
   return (
     <TextareaComponent
