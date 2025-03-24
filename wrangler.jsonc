@@ -12,4 +12,14 @@
     "enabled": true,
     "head_sampling_rate": 1,
   },
+  "routes": [
+    {
+      "pattern": "www.melbournetech.com",
+      "custom_domain": true,
+    },
+    {
+      "pattern": "melbournetech.com",
+      "custom_domain": true,
+    },
+  ],
 }
