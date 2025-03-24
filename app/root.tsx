@@ -1,13 +1,12 @@
-import type { LinksFunction, LoaderFunctionArgs } from '@remix-run/cloudflare'
+import type { LinksFunction, LoaderFunctionArgs } from 'react-router'
 import {
-  json,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
   useLoaderData,
-} from '@remix-run/react'
+} from 'react-router'
 
 import './tailwind.css'
 
@@ -30,9 +29,9 @@ export async function loader({ context }: LoaderFunctionArgs) {
     SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY,
   }
 
-  return json({
+  return {
     ENV,
-  })
+  }
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {

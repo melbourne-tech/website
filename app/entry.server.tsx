@@ -1,40 +1,36 @@
-import type { EntryContext } from '@remix-run/cloudflare'
-import { RemixServer } from '@remix-run/react'
 import { isbot } from 'isbot'
 import { renderToReadableStream } from 'react-dom/server'
-
-const ABORT_DELAY = 5000
+import type { EntryContext } from 'react-router'
+import { ServerRouter } from 'react-router'
 
 export default async function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  remixContext: EntryContext,
+  routerContext: EntryContext,
 ) {
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), ABORT_DELAY)
+  let shellRendered = false
+  const userAgent = request.headers.get('user-agent')
 
   const body = await renderToReadableStream(
-    <RemixServer
-      context={remixContext}
-      url={request.url}
-      abortDelay={ABORT_DELAY}
-    />,
+    <ServerRouter context={routerContext} url={request.url} />,
     {
-      signal: controller.signal,
       onError(error: unknown) {
-        if (!controller.signal.aborted) {
-          // Log streaming rendering errors from inside the shell
+        responseStatusCode = 500
+        // Log streaming rendering errors from inside the shell.  Don't log
+        // errors encountered during initial shell rendering since they'll
+        // reject and get logged in handleDocumentRequest.
+        if (shellRendered) {
           console.error(error)
         }
-        responseStatusCode = 500
       },
     },
   )
+  shellRendered = true
 
-  body.allReady.then(() => clearTimeout(timeoutId))
-
-  if (isbot(request.headers.get('user-agent') || '')) {
+  // Ensure requests from bots and SPA Mode renders wait for all content to load before responding
+  // https://react.dev/reference/react-dom/server/renderToPipeableStream#waiting-for-all-content-to-load-for-crawlers-and-static-generation
+  if ((userAgent && isbot(userAgent)) || routerContext.isSpaMode) {
     await body.allReady
   }
 

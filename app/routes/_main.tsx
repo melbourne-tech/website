@@ -1,4 +1,4 @@
-import { Link, Outlet } from '@remix-run/react'
+import { Link, Outlet } from 'react-router';
 import { HomeIcon, MailIcon } from 'lucide-react'
 
 const currentYear = new Date().getFullYear()

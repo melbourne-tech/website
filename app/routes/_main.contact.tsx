@@ -1,12 +1,6 @@
-import {
-  ActionFunctionArgs,
-  json,
-  LoaderFunctionArgs,
-  type MetaFunction,
-} from '@remix-run/cloudflare'
-import { useFetcher, useLoaderData } from '@remix-run/react'
 import { CheckCircleIcon, SendIcon, XCircleIcon } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { data, useFetcher } from 'react-router'
 import { z } from 'zod'
 import { validationErrorsForField } from '~/lib/form'
 import { createResendClient } from '~/lib/resend'
@@ -14,19 +8,20 @@ import Button from '../components/Button'
 import Input from '../components/Input'
 import Label from '../components/Label'
 import Textarea from '../components/Textarea'
+import type { Route } from './+types/_main.contact'
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: 'Contact | Melbourne Tech' },
     { name: 'description', content: 'Contact Melbourne Tech' },
   ]
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url)
   const subject = url.searchParams.get('subject')
 
-  return json({ subject })
+  return { subject }
 }
 
 const schema = z.object({
@@ -37,11 +32,11 @@ const schema = z.object({
   is_bot: z.literal('false'),
 })
 
-export const action = async ({ request, context }: ActionFunctionArgs) => {
+export const action = async ({ request, context }: Route.ActionArgs) => {
   const body = await request.formData()
   const parsed = schema.safeParse(Object.fromEntries(body))
   if (!parsed.success) {
-    return json(
+    return data(
       {
         name: 'ValidationError' as const,
         formErrors: parsed.error.formErrors,
@@ -67,14 +62,15 @@ From: ${name}
   })
 
   if (error) {
-    return json({ name: 'SendError' }, { status: 500 })
+    return data({ name: 'SendError' }, { status: 500 })
   }
 
   return null
 }
 
-export default function ContactPage() {
-  const { subject } = useLoaderData<typeof loader>()
+export default function ContactPage({
+  loaderData: { subject },
+}: Route.ComponentProps) {
   const fetcher = useFetcher<typeof action>()
 
   const isSubmitting = fetcher.state === 'submitting'
@@ -92,7 +88,7 @@ export default function ContactPage() {
 
   return (
     <div className="flex flex-col flex-1">
-      <section className="w-full max-w-xl px-4 mx-auto my-8 sm:my-12 md:my-16 flex flex-col gap-6 sm:gap-8">
+      <section className="w-full max-w-xl px-4 mx-auto my-8 sm:my-12 flex flex-col gap-6 sm:gap-8">
         <h1
           className="font-bold leading-normal"
           style={{ fontSize: 'clamp(2rem, 6vw, 3rem)' }}
