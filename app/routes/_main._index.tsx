@@ -1,9 +1,9 @@
-import type { MetaFunction } from '@remix-run/node'
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
 import { AndroidIcon, AppleIcon } from '~/components/Icons'
 import { ProjectCard, type Project } from '~/components/ProjectCard'
+import type { Route } from './+types/_main._index'
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: 'Melbourne Tech' },
     { name: 'description', content: 'Melbourne Tech' },
@@ -17,12 +17,6 @@ const projects: Project[] = [
     description: 'An Expo and Supabase starter kit boilerplate',
   },
   {
-    name: 'then.sh',
-    status: 'upcoming',
-    description: 'A modern container deployment platform that gives you the reliability of enterprise infrastructure on your own servers',
-    url: 'https://then.sh/',
-  },
-  {
     name: 'side.domains',
     status: 'active',
     description: 'A toolkit for managing your side project domains',
@@ -31,7 +25,8 @@ const projects: Project[] = [
   {
     name: 'Gin Rummy Score Tracker',
     status: 'active',
-    description: 'iOS and Android app for tracking scores in the gin rummy card game',
+    description:
+      'iOS and Android app for tracking scores in the gin rummy card game',
     url: [
       {
         url: 'https://apps.apple.com/us/app/gin-rummy-score-tracker/id1620676041',
@@ -48,7 +43,8 @@ const projects: Project[] = [
   {
     name: 'Credit Card Churner Australia',
     status: 'active',
-    description: 'Compares Credit Card Welcome Bonuses for australian credit cards',
+    description:
+      'Compares Credit Card Welcome Bonuses for australian credit cards',
     url: 'https://www.churner.com.au/',
   },
 ]
@@ -56,7 +52,7 @@ const projects: Project[] = [
 export default function Index() {
   return (
     <div className="flex flex-col flex-1">
-      <section className="w-full max-w-6xl px-4 mx-auto my-8 sm:my-12 md:my-16">
+      <section className="w-full max-w-6xl px-4 mx-auto my-8 sm:my-12">
         <h1
           className="font-bold leading-normal"
           style={{ fontSize: 'clamp(2rem, 9vw, 5rem)' }}

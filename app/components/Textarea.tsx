@@ -34,8 +34,8 @@ const Textarea = ({
       onChange={onChange}
       placeholder={placeholder}
       className={clsx(
-        'rounded-lg shadow-sm transition duration-200 border-gray-300',
-        'focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:border-blue-400 focus-visible:ring-blue-200',
+        'rounded-lg shadow-xs transition duration-200 border-gray-300',
+        'focus:outline-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:border-blue-400 focus-visible:ring-blue-200',
         className,
       )}
       required={required}

@@ -1,13 +1,13 @@
-import type { MetaFunction } from '@remix-run/node'
-import { Link } from '@remix-run/react'
+import { Link } from 'react-router'
+import type { Route } from './+types/_main.app.gin-rummy-score-tracker.privacy-policy'
 
-export const meta: MetaFunction = () => {
+export const meta: Route.MetaFunction = () => {
   return [{ title: 'Gin Rummy Score Tracker Privacy Policy | Melbourne Tech' }]
 }
 
 export default function GinRummyScoreTrackerPrivacyPolicyPage() {
   return (
-    <article className="w-full max-w-xl px-4 mx-auto my-8 sm:my-12 md:my-16 prose">
+    <article className="w-full max-w-xl px-4 mx-auto my-8 sm:my-12 prose">
       <h1>Privacy Policy</h1>
       <p>Last updated: August 06, 2022</p>
       <p>
