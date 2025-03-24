@@ -25,8 +25,8 @@ export const links: LinksFunction = () => [
 
 export async function loader({ context }: LoaderFunctionArgs) {
   const ENV: WindowEnv = {
-    SUPABASE_URL: context.cloudflare.env.SUPABASE_URL,
-    SUPABASE_ANON_KEY: context.cloudflare.env.SUPABASE_ANON_KEY,
+    CLOUDFLARE_TURNSTILE_SITE_KEY:
+      context.cloudflare.env.CLOUDFLARE_TURNSTILE_SITE_KEY,
   }
 
   return {
