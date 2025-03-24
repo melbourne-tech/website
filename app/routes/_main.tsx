@@ -9,7 +9,7 @@ export default function Landing() {
       <header className="flex justify-between">
         <Link
           to="/"
-          className="py-2 px-[13px] m-[3px] flex items-center font-medium justify-center gap-1 text-gray-600 transition-colors duration-200 rounded-sm hover:text-blue-500 focus:outline-none focus-visible:ring"
+          className="py-2 px-[13px] m-[3px] flex items-center font-medium justify-center gap-1 text-gray-600 transition-colors duration-200 rounded-xs hover:text-blue-500 focus:outline-hidden focus-visible:ring-3"
         >
           <HomeIcon className="w-3.5 h-3.5" />
           <span>Home</span>
@@ -17,7 +17,7 @@ export default function Landing() {
 
         <Link
           to="/contact"
-          className="py-2 px-[13px] m-[3px] flex items-center font-medium justify-center gap-1 text-gray-600 transition-colors duration-200 rounded-sm hover:text-blue-500 focus:outline-none focus-visible:ring"
+          className="py-2 px-[13px] m-[3px] flex items-center font-medium justify-center gap-1 text-gray-600 transition-colors duration-200 rounded-xs hover:text-blue-500 focus:outline-hidden focus-visible:ring-3"
         >
           <MailIcon className="w-3.5 h-3.5" />
           <span>Contact</span>
@@ -28,7 +28,7 @@ export default function Landing() {
         <Outlet />
       </main>
 
-      <footer className="flex-shrink-0 px-4 py-3 border-t-2 border-gray-100 flex flex-row justify-between items-center">
+      <footer className="shrink-0 px-4 py-3 border-t-2 border-gray-100 flex flex-row justify-between items-center">
         <div>&copy; Melbourne Tech, LLC {currentYear}</div>
 
         <div className="flex space-x-3">

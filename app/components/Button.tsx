@@ -22,7 +22,7 @@ const Button = ({
       key="showAllSkillsButton"
       onClick={onClick}
       className={clsx(
-        'relative flex items-center select-none flex-shrink-0 px-4 py-2 font-medium text-white transition duration-200 border rounded-full focus:outline-none focus-visible:ring focus-visible:border-blue-500',
+        'relative flex items-center select-none shrink-0 px-4 py-2 font-medium text-white transition duration-200 border rounded-full focus:outline-hidden focus-visible:ring-3 focus-visible:border-blue-500',
         variant === 'DEFAULT' &&
           'bg-slate-800 border-slate-800 hover:bg-slate-600 hover:border-slate-600 active:bg-slate-500',
         variant === 'SUCCESS' &&
@@ -35,7 +35,7 @@ const Button = ({
     >
       <span
         className={clsx(
-          'flex items-center flex-shrink-0 gap-2',
+          'flex items-center shrink-0 gap-2',
           isLoading && 'opacity-0',
         )}
       >
