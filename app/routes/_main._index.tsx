@@ -17,6 +17,12 @@ const projects: Project[] = [
     description: 'An Expo and Supabase starter kit boilerplate',
   },
   {
+    name: 'flightdeals.net',
+    status: 'active',
+    description: 'Find or be alerted to cheap fares for your next trip',
+    url: 'https://www.flightdeals.net/',
+  },
+  {
     name: 'side.domains',
     status: 'active',
     description: 'A toolkit for managing your side project domains',
