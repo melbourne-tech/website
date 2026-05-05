@@ -30,7 +30,7 @@ export const loader = async ({ request, context }: Route.LoaderArgs) => {
 
 const schema = z.object({
   name: z.string().min(1, "Can't be empty"),
-  email: z.string().email(),
+  email: z.email(),
   subject: z.string().min(1, "Can't be empty"),
   message: z.string().min(1, "Can't be empty"),
   cf_turnstile_response: z.string().min(1, 'You must complete the captcha'),
@@ -43,7 +43,7 @@ export const action = async ({ request, context }: Route.ActionArgs) => {
     return data(
       {
         name: 'ValidationError' as const,
-        formErrors: parsed.error.formErrors,
+        formErrors: z.flattenError(parsed.error),
       },
       { status: 400 },
     )

@@ -12,25 +12,28 @@ export const meta: Route.MetaFunction = () => {
 
 const projects: Project[] = [
   {
-    name: 'App Boilerplate',
-    status: 'upcoming',
-    description: 'An Expo and Supabase starter kit boilerplate',
-  },
-  {
     name: 'flightdeals.net',
-    status: 'active',
     description: 'Find or be alerted to cheap fares for your next trip',
     url: 'https://www.flightdeals.net/',
   },
   {
+    name: 'dollarydoos.com.au',
+    description: 'Personal finance tools and calculators for Australians',
+    url: 'https://www.dollarydoos.com.au/',
+  },
+  {
+    name: 'Credit Card Churner Australia',
+    description:
+      'Compares Credit Card Welcome Bonuses for australian credit cards',
+    url: 'https://www.churner.com.au/',
+  },
+  {
     name: 'side.domains',
-    status: 'active',
     description: 'A toolkit for managing your side project domains',
     url: 'https://side.domains/',
   },
   {
     name: 'Gin Rummy Score Tracker',
-    status: 'active',
     description:
       'iOS and Android app for tracking scores in the gin rummy card game',
     url: [
@@ -45,13 +48,6 @@ const projects: Project[] = [
         icon: AndroidIcon,
       },
     ],
-  },
-  {
-    name: 'Credit Card Churner Australia',
-    status: 'active',
-    description:
-      'Compares Credit Card Welcome Bonuses for australian credit cards',
-    url: 'https://www.churner.com.au/',
   },
 ]
 
